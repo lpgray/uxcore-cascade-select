@@ -133,18 +133,21 @@ class CascadeSelect extends SuperComponent {
         displayValue,
         value: newValue,
         selectedOptions: newSelectedOptions,
+        inputValue: null,
       });
     } else if (hideSubmenu) {
       this.setState({
         displayValue,
         value: newValue,
         selectedOptions: newSelectedOptions,
+        inputValue: null,
       });
     } else if (newValue.length >= this.props.cascadeSize) {
       this.setState({
         value: newValue,
         displayValue,
         selectedOptions: newSelectedOptions,
+        inputValue: null,
       });
     } else {
       displayValue = [];
@@ -152,6 +155,7 @@ class CascadeSelect extends SuperComponent {
         displayValue,
         value: newValue,
         selectedOptions: newSelectedOptions,
+        inputValue: null,
       });
     }
   }
@@ -213,7 +217,7 @@ class CascadeSelect extends SuperComponent {
             value={
               this.state.inputValue !== null ?
                 this.state.inputValue :
-                this.props.beforeRender(displayValue, selectedOptions)
+                this.props.beforeRender(displayValue, selectedOptions) // TODO: change on select 修正
             }
             onChange={(e) => {
               const keywords = e.target.value;
@@ -359,7 +363,7 @@ class CascadeSelect extends SuperComponent {
     }
 
     // 当 focus 并且输入自定义的值，则请求 RPC，然后渲染 RPC 返回值到 submenu 中
-    if (this.state.searchResult) {
+    if (this.state.searchResult && this.state.inputValue) {
       submenu = (
         <div className="kuma-dropdown-menu-submenu">
           {
@@ -395,8 +399,7 @@ class CascadeSelect extends SuperComponent {
     }
 
     const props = {};
-    if (this.state.inputValue !== null &&
-      this.state.searchResult && this.state.searchResult.length > 0) {
+    if (this.state.inputValue && this.state.searchResult && this.state.searchResult.length > 0) {
       props.visible = true;
     }
 
