@@ -156,7 +156,6 @@ class CascadeSubmenu extends SuperComponent {
     if (this.props.dropDownWidth) {
       wrapStyle.width = this.props.dropDownWidth;
     }
-
     return (
       <div className={this.prefixCls('submenu')} style={wrapStyle}>
         <div className={this.prefixCls('submenu-wrap')}>

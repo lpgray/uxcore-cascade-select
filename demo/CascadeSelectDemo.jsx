@@ -167,6 +167,18 @@ class Demo extends React.Component {
           locale={'en_US'}
           miniMode={false}
           cascadeSize={3}
+          displayMode="searchAndDropdown"
+          searchOption={{
+            doSearch(keyword, afterSearch) {
+              afterSearch([{
+                label: '新百伦',
+                value: 'newbal',
+              }, {
+                label: '短信服务',
+                value: 2815,  
+              }]);
+            },
+          }}
         />
         <h2>禁用的</h2>
         <CascadeSelect

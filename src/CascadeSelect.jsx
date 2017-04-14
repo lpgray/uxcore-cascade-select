@@ -30,6 +30,8 @@ class CascadeSelect extends SuperComponent {
       displayValue: value || defaultValue || [],
       value: value || defaultValue || [],
       selectedOptions,
+      inputValue: null,
+      searchResult: null,
     };
 
     // 兼容老版本的locale code
@@ -179,6 +181,8 @@ class CascadeSelect extends SuperComponent {
       className,
       disabled,
       clearable,
+      displayMode,
+      searchOption,
     } = this.props;
 
     const { selectedOptions, showSubMenu, displayValue } = this.state;
@@ -200,22 +204,27 @@ class CascadeSelect extends SuperComponent {
         })}
       >
         <div className={this.prefixCls('text')}>
-          <div
-            className={this.prefixCls('trigger')}
-          >
-            {
-              placeholder && !displayValue.length ?
-                <div className={this.prefixCls('placeholder')}>
-                  {placeholder}
-                </div> :
-                null
+          <input
+            type="text"
+            placeholder={placeholder}
+            style={{ width: '100%', border: 'none', background: 'transparent' }}
+            disabled={disabled}
+            readOnly={displayMode !== 'searchAndDropdown'}
+            value={
+              this.state.inputValue !== null ?
+                this.state.inputValue :
+                this.props.beforeRender(displayValue, selectedOptions)
             }
-            {
-              displayValue.length ?
-                this.props.beforeRender(displayValue, selectedOptions) :
-                null
-            }
-          </div>
+            onChange={(e) => {
+              const keywords = e.target.value;
+              if (searchOption) {
+                searchOption.doSearch(keywords, (searchResult) => {
+                  this.setState({ searchResult });
+                });
+              }
+              this.setState({ inputValue: keywords });
+            }}
+          />
         </div>
         <div
           className={classnames({
@@ -226,9 +235,7 @@ class CascadeSelect extends SuperComponent {
           <i className="kuma-icon kuma-icon-triangle-down" />
         </div>
         {
-          <div
-            className={this.prefixCls('close-wrap')}
-          >
+          <div className={this.prefixCls('close-wrap')}>
             <i onClick={this.clearContent.bind(this)} className="kuma-icon kuma-icon-error" />
           </div>
         }
@@ -319,6 +326,7 @@ class CascadeSelect extends SuperComponent {
         style={this.props.dropDownWidth ? { width: this.props.dropDownWidth } : null}
       />
     );
+
     if (options.length && !disabled) {
       submenu = (
         <CascadeSubmenu
@@ -349,12 +357,56 @@ class CascadeSelect extends SuperComponent {
         />
       );
     }
+
+    // 当 focus 并且输入自定义的值，则请求 RPC，然后渲染 RPC 返回值到 submenu 中
+    if (this.state.searchResult) {
+      submenu = (
+        <div className="kuma-dropdown-menu-submenu">
+          {
+            this.state.searchResult.map(item =>
+              <div
+                key={item.value}
+                onClick={() => {
+                  const selectedOptions = this.getSelectedOptions({
+                    value: [item.value],
+                    options,
+                  });
+                  let val = [];
+                  if (selectedOptions && selectedOptions.length) {
+                    val = selectedOptions.map(i => i.value);
+                  }
+
+                  this.setState({
+                    inputValue: null,
+                    searchResult: null,
+                    displayValue: val,
+                    value: val,
+                    selectedOptions,
+                  });
+                }}
+                className="kuma-dropdown-menu-select-option"
+              >
+                {item.label}
+              </div>
+            )
+          }
+        </div>
+      );
+    }
+
+    const props = {};
+    if (this.state.inputValue !== null &&
+      this.state.searchResult && this.state.searchResult.length > 0) {
+      props.visible = true;
+    }
+
     return (
       <Dropdown
         overlay={submenu}
         trigger={['click']}
         onVisibleChange={this.onDropDownVisibleChange.bind(this)}
         getPopupContainer={getPopupContainer}
+        {...props}
       >
         {this.renderContent()}
       </Dropdown>
@@ -406,7 +458,7 @@ CascadeSelect.propTypes = {
   locale: React.PropTypes.oneOf(['zh-cn', 'en-us']),
   miniMode: React.PropTypes.bool,
   dropDownWidth: React.PropTypes.number,
-  displayMode: React.PropTypes.oneOf(['dropdown', 'select']),
+  displayMode: React.PropTypes.oneOf(['dropdown', 'select', 'searchAndDropdown']),
   getSelectPlaceholder: React.PropTypes.func,
 };
 
