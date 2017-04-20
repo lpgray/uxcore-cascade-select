@@ -53,10 +53,6 @@ const options = [{
     children: [{
       value: 'nanjinglu',
       label: '南京路',
-      children: [{
-        value: 'newbal',
-        label: '新百伦',
-      }],
     }],
   }, {
     value: 'hexi',
@@ -171,11 +167,11 @@ class Demo extends React.Component {
           searchOption={{
             doSearch(keyword, afterSearch) {
               afterSearch([{
-                label: '新百伦',
-                value: 'newbal',
+                label: '南京路',
+                value: 'nanjinglu',
               }, {
                 label: '短信服务',
-                value: 2815,  
+                value: 2815,
               }]);
             },
           }}

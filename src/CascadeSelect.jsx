@@ -386,6 +386,8 @@ class CascadeSelect extends SuperComponent {
                     displayValue: val,
                     value: val,
                     selectedOptions,
+                  }, () => {
+                    this.props.onChange(val, selectedOptions);
                   });
                 }}
                 className="kuma-dropdown-menu-select-option"
