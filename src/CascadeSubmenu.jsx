@@ -141,7 +141,8 @@ class CascadeSubmenu extends SuperComponent {
             this.displayData ?
               this.displayData.map((label, idx) =>
                 <div key={idx} style={{ marginLeft: 12 * idx }}>
-                  <i className="kuma-icon kuma-icon-chevron-right" /> {label}
+                  <i className="kuma-icon kuma-icon-chevron-right" />
+                  <span title={label}>{label}</span>
                 </div>
               ) :
               null
