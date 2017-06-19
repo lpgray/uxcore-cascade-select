@@ -279,6 +279,10 @@ class CascadeSelect extends SuperComponent {
             placeholder={this.getSelectPlaceholder(i)}
             getPopupContainer={this.props.getPopupContainer}
             value={value[i]}
+            dropdownMatchSelectWidth={false}
+            dropdownStyle={{
+              width: this.props.columnWidth,
+            }}
             onChange={v => {
               let stateValue = this.state.value;
               let selectedOptions = this.state.selectedOptions;
@@ -319,6 +323,7 @@ class CascadeSelect extends SuperComponent {
       expandTrigger,
       cascadeSize,
       getPopupContainer,
+      columnWidth,
     } = this.props;
     const { value } = this.state;
     if (disabled) {
@@ -327,7 +332,7 @@ class CascadeSelect extends SuperComponent {
     let submenu = (
       <div
         className={this.prefixCls('submenu-empty')}
-        style={this.props.dropDownWidth ? { width: this.props.dropDownWidth } : null}
+        style={columnWidth ? { width: columnWidth * this.props.cascadeSize } : null}
       />
     );
 
@@ -357,7 +362,7 @@ class CascadeSelect extends SuperComponent {
               this.props.onChange(newValue, newSelectedOptions);
             }
           }}
-          dropDownWidth={this.props.dropDownWidth}
+          columnWidth={this.props.columnWidth}
         />
       );
     }
@@ -441,7 +446,7 @@ CascadeSelect.defaultProps = {
   },
   locale: 'zh-cn',
   miniMode: true,
-  dropDownWidth: 0,
+  columnWidth: 100,
   displayMode: 'dropdown',
   getSelectPlaceholder: null,
 };
@@ -464,6 +469,7 @@ CascadeSelect.propTypes = {
   miniMode: React.PropTypes.bool,
   dropDownWidth: React.PropTypes.number,
   displayMode: React.PropTypes.oneOf(['dropdown', 'select', 'searchAndDropdown']),
+  columnWidth: React.PropTypes.number,
   getSelectPlaceholder: React.PropTypes.func,
 };
 

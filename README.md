@@ -96,6 +96,7 @@ render(<CascadeSelect />, document.getElementById('root'))
 | miniMode | boolean | false | true | 是否是简洁显示风格
 | dropDownWidth | number | false | 0 | 默认为 0 表示直接使用 trigger 的宽度作为 dropdown 的宽度
 | displayMode | string | false | `dropdown` | `select`, `dropdown` 或者 `searchAndDropdown`
+| columnWidth | number | false | 100 | dropdown中每一列的宽度
 | getSelectPlaceholder | func | false | `function(idx){ return '请选择' }` | select显示模式下的placeholder生成函数
 | searchOption | object | false | null | 自定义搜索，当 displayMode 为 `searchAndDropdown` 时，启用此特性，参考下方 `注1`
 
