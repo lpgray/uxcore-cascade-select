@@ -175,6 +175,7 @@ class Demo extends React.Component {
               }]);
             },
           }}
+          columnWidth={120}
         />
         <h2>禁用的</h2>
         <CascadeSelect

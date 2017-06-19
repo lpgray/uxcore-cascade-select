@@ -143,12 +143,3 @@ const options = [{
   }],
 }];
 ```
-
-### 当不指定 dropdown 宽度时，还可以使用css来定制dropdown宽度
-
-```less
-.kuma-cascader-submenu-empty,
-.kuma-dropdown-menu-submenu {
-    width: 400px; // 你想要的 dropdown 宽度
-}
-```

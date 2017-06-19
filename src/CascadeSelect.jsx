@@ -446,7 +446,7 @@ CascadeSelect.defaultProps = {
   },
   locale: 'zh-cn',
   miniMode: true,
-  columnWidth: 100,
+  columnWidth: 120,
   displayMode: 'dropdown',
   getSelectPlaceholder: null,
 };
