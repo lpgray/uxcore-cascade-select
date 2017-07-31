@@ -71,11 +71,11 @@ class CascadeSubmenu extends SuperComponent {
   }
 
   renderSubmenus() {
-    const { value, options, expandTrigger, cascadeSize, miniMode } = this.props;
+    const { value, options, expandTrigger, cascadeSize, displayMode } = this.props;
     const submenu = [];
 
     let width = `${(100 / cascadeSize).toFixed(1)}%`;
-    if (!miniMode) {
+    if (displayMode !== 'dropdown') {
       width = `${(100 / (cascadeSize + 1)).toFixed(1)}%`;
     }
 
@@ -156,7 +156,7 @@ class CascadeSubmenu extends SuperComponent {
     const wrapStyle = {};
     if (this.props.columnWidth) {
       wrapStyle.width = this.props.columnWidth * this.props.cascadeSize;
-      if (!this.props.miniMode) {
+      if (this.props.displayMode !== 'dropdown') {
         wrapStyle.width = this.props.columnWidth * (this.props.cascadeSize + 1);
       }
     }
@@ -166,12 +166,12 @@ class CascadeSubmenu extends SuperComponent {
           {this.renderSubmenus()}
 
           {
-            this.props.miniMode ? null :
+            this.props.displayMode === 'dropdown' ? null :
               this.renderAllSelection()
           }
         </div>
         {
-          this.props.miniMode ? null :
+          this.props.displayMode === 'dropdown' ? null :
             this.renderBottomBar()
         }
       </div>
@@ -184,7 +184,6 @@ CascadeSubmenu.propTypes = {
   onItemClick: React.PropTypes.func,
   value: React.PropTypes.array,
   options: React.PropTypes.array,
-  miniMode: React.PropTypes.bool,
   onOkButtonClick: React.PropTypes.func,
   columnWidth: React.PropTypes.number,
   cascadeSize: React.PropTypes.number,
@@ -195,7 +194,6 @@ CascadeSubmenu.defaultProps = {
   onItemClick() { },
   value: [],
   options: [],
-  miniMode: false,
   onOkButtonClick: () => { },
 };
 

@@ -108,14 +108,14 @@ class CascadeSelect extends SuperComponent {
     const newSelectedOptions = selectedOptions.slice(0, index);
     newSelectedOptions.push(selectedOption);
     if (!hasChildren) {
-      if (this.props.miniMode) {
+      if (this.props.displayMode === 'dropdown') {
         hideSubmenu = true;
         this.wrapper.click();
       }
     }
 
     if (onChange) {
-      if (!this.props.miniMode) { // 如果展示风格为复杂风格，则点击OK才进行onChange回调
+      if (this.props.displayMode !== 'dropdown') { // 如果展示风格为复杂风格，则点击OK才进行onChange回调
         this.newValue = newValue;
         this.newSelectedOptions = newSelectedOptions;
       } else {
@@ -124,7 +124,7 @@ class CascadeSelect extends SuperComponent {
     }
 
     let displayValue = newValue;
-    if (!this.props.miniMode) {
+    if (this.props.displayMode !== 'dropdown') {
       displayValue = [];
     }
 
@@ -176,7 +176,9 @@ class CascadeSelect extends SuperComponent {
   onDropDownVisibleChange(visible) {
     const { disabled } = this.props;
     if (!disabled) {
-      this.setState({ showSubMenu: visible });
+      this.setState({
+        showSubMenu: visible,
+      });
     }
   }
 
@@ -311,6 +313,25 @@ class CascadeSelect extends SuperComponent {
     return <div className={this.prefixCls('select-wrap')}>{back}</div>;
   }
 
+  /**
+   * dropdown 和 searchAndDropdonw 模式下的确认方法
+   */
+  onConfirmValue() {
+    const newValue = this.newValue;
+    const newSelectedOptions = this.newSelectedOptions;
+    this.wrapper.click();
+    if (newValue && newSelectedOptions) {
+      this.setState({
+        value: newValue,
+        displayValue: newValue,
+        selectedOptions: newSelectedOptions,
+      });
+      delete this.newValue;
+      delete this.newSelectedOptions;
+      this.props.onChange(newValue, newSelectedOptions);
+    }
+  }
+
   render() {
     if (this.props.displayMode === 'select') {
       return this.renderSelect();
@@ -346,22 +367,8 @@ class CascadeSelect extends SuperComponent {
           expandTrigger={expandTrigger}
           cascadeSize={cascadeSize}
           locale={this.locale}
-          miniMode={this.props.miniMode}
-          onOkButtonClick={() => {
-            this.wrapper.click();
-            const newValue = this.newValue;
-            const newSelectedOptions = this.newSelectedOptions;
-            if (newValue && newSelectedOptions) {
-              this.setState({
-                value: newValue,
-                displayValue: newValue,
-                selectedOptions: newSelectedOptions,
-              });
-              delete this.newValue;
-              delete this.newSelectedOptions;
-              this.props.onChange(newValue, newSelectedOptions);
-            }
-          }}
+          displayMode={this.props.displayMode}
+          onOkButtonClick={this.onConfirmValue.bind(this)}
           columnWidth={this.props.columnWidth}
         />
       );
@@ -439,13 +446,12 @@ CascadeSelect.defaultProps = {
   expandTrigger: 'click',
   cascadeSize: 3,
   beforeRender: (value, selectedOptions) => {
-    if (selectedOptions.length) {
+    if (value.length && selectedOptions.length) {
       return selectedOptions.map(o => o && o.label).join(' / ');
     }
     return value.join('/');
   },
   locale: 'zh-cn',
-  miniMode: true,
   columnWidth: 120,
   displayMode: 'dropdown',
   getSelectPlaceholder: null,
@@ -466,8 +472,6 @@ CascadeSelect.propTypes = {
   expandTrigger: React.PropTypes.string,
   beforeRender: React.PropTypes.func,
   locale: React.PropTypes.oneOf(['zh-cn', 'en-us']),
-  miniMode: React.PropTypes.bool,
-  dropDownWidth: React.PropTypes.number,
   displayMode: React.PropTypes.oneOf(['dropdown', 'select', 'searchAndDropdown']),
   columnWidth: React.PropTypes.number,
   getSelectPlaceholder: React.PropTypes.func,

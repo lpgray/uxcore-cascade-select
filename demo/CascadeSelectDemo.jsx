@@ -145,7 +145,6 @@ class Demo extends React.Component {
             document.body.appendChild(div);
             return div;
           }}
-          dropDownWidth={400}
           onChange={(value, selected) => {
             console.log('Select 风格', value, selected);
           }}
