@@ -320,12 +320,13 @@ class CascadeSelect extends SuperComponent {
   onConfirmValue() {
     const newValue = this.newValue;
     const newSelectedOptions = this.newSelectedOptions;
-    this.wrapper.click();
     if (this.props.mustLeaf && newValue.length < this.props.cascadeSize) {
       this.setState({
         displayValue: [],
         value: [],
         selectedOptions: [],
+      }, () => {
+        this.wrapper.click();
       });
       Message.info(i18n[this.locale].mustLeaf, 3);
     } else if (newValue && newSelectedOptions) {
@@ -333,6 +334,8 @@ class CascadeSelect extends SuperComponent {
         value: newValue,
         displayValue: newValue,
         selectedOptions: newSelectedOptions,
+      }, () => {
+        this.wrapper.click();
       });
       delete this.newValue;
       delete this.newSelectedOptions;
