@@ -93,11 +93,11 @@ render(<CascadeSelect />, document.getElementById('root'))
 | cascadeSize | number | false | `3` | 级联的层级数 |
 | getPopupContainer | function():HTMLElement | false | - | 返回一个 html 元素用作 Popup 面板的容器，默认是插在body 中的一个 div |
 | locale | string | false | `'zh-cn'` | `'en-us'`
-| miniMode | boolean | false | true | 是否是简洁显示风格
-| displayMode | string | false | `dropdown` | `select`, `dropdown` 或者 `searchAndDropdown`
+| displayMode | string | false | `dropdown` | `select`, `dropdown`, `searchAndDropdown`, `gather`
 | columnWidth | number | false | 100 | dropdown中每一列的宽度
 | getSelectPlaceholder | func | false | `function(idx){ return '请选择' }` | select显示模式下的placeholder生成函数
 | searchOption | object | false | null | 自定义搜索，当 displayMode 为 `searchAndDropdown` 时，启用此特性，参考下方 `注1`
+| mustLeaf | boolean | false | false | 必须选中叶子节点
 
 ### 注1：searchOption
 

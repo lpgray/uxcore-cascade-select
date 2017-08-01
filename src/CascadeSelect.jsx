@@ -9,6 +9,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Dropdown from 'uxcore-dropdown';
 import Select2 from 'uxcore-select2';
+import Message from 'uxcore-message';
 import i18n from './i18n';
 import CascadeSubmenu from './CascadeSubmenu';
 import SuperComponent from './SuperComponent';
@@ -101,7 +102,7 @@ class CascadeSelect extends SuperComponent {
 
   onSubmenuItemClick(key, index, selectedOption, hasChildren) {
     const { value, selectedOptions } = this.state;
-    const { onChange, changeOnSelect } = this.props;
+    const { onChange, changeOnSelect, mustLeaf } = this.props;
     let hideSubmenu = false;
     const newValue = value.slice(0, index);
     newValue.push(key);
@@ -142,7 +143,7 @@ class CascadeSelect extends SuperComponent {
         selectedOptions: newSelectedOptions,
         inputValue: null,
       });
-    } else if (newValue.length >= this.props.cascadeSize) {
+    } else if (mustLeaf && newValue.length >= this.props.cascadeSize) {
       this.setState({
         value: newValue,
         displayValue,
@@ -320,7 +321,14 @@ class CascadeSelect extends SuperComponent {
     const newValue = this.newValue;
     const newSelectedOptions = this.newSelectedOptions;
     this.wrapper.click();
-    if (newValue && newSelectedOptions) {
+    if (this.props.mustLeaf && newValue.length < this.props.cascadeSize) {
+      this.setState({
+        displayValue: [],
+        value: [],
+        selectedOptions: [],
+      });
+      Message.info(i18n[this.locale].mustLeaf, 3);
+    } else if (newValue && newSelectedOptions) {
       this.setState({
         value: newValue,
         displayValue: newValue,
@@ -455,6 +463,7 @@ CascadeSelect.defaultProps = {
   columnWidth: 120,
   displayMode: 'dropdown',
   getSelectPlaceholder: null,
+  mustLeaf: false,
 };
 
 // http://facebook.github.io/react/docs/reusable-components.html
@@ -472,9 +481,10 @@ CascadeSelect.propTypes = {
   expandTrigger: React.PropTypes.string,
   beforeRender: React.PropTypes.func,
   locale: React.PropTypes.oneOf(['zh-cn', 'en-us']),
-  displayMode: React.PropTypes.oneOf(['dropdown', 'select', 'searchAndDropdown']),
+  displayMode: React.PropTypes.oneOf(['dropdown', 'select', 'searchAndDropdown', 'gather']),
   columnWidth: React.PropTypes.number,
   getSelectPlaceholder: React.PropTypes.func,
+  mustLeaf: React.PropTypes.bool,
 };
 
 CascadeSelect.displayName = 'CascadeSelect';

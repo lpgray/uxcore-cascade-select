@@ -48,6 +48,7 @@
     "object-assign": "^4.0.0",
     "uxcore-button": "^0.4.10",
     "uxcore-dropdown": "^0.4.1",
+    "uxcore-message": "^0.4.0",
     "uxcore-select2": "^0.4.7"
   },
   "contributors": [],

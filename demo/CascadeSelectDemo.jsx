@@ -151,17 +151,27 @@ class Demo extends React.Component {
           displayMode="select"
           cascadeSize={3}
         />
-        <h2>Clearable</h2>
+        <h2>displayMode="gather"</h2>
         <CascadeSelect
           defaultValue={['alibaba', 'platform', 'fe']}
           options={options}
           clearable
-          onChange={(value, selected) => {
-            console.log('Clearable', value, selected);
-          }}
+          onChange={(value, selected) => { console.log('gather', value, selected); }}
           locale={'en_US'}
-          miniMode={false}
           cascadeSize={3}
+          mustLeaf
+          displayMode="gather"
+          columnWidth={120}
+        />
+        <h2>displayMode="selectAndDropdown"</h2>
+        <CascadeSelect
+          defaultValue={['alibaba', 'platform', 'fe']}
+          options={options}
+          clearable
+          onChange={(value, selected) => { console.log('selectAndDropdown', value, selected); }}
+          locale={'en_US'}
+          cascadeSize={3}
+          mustLeaf
           displayMode="searchAndDropdown"
           searchOption={{
             doSearch(keyword, afterSearch) {
@@ -182,14 +192,23 @@ class Demo extends React.Component {
           options={options}
           clearable
           disabled
-          onChange={(value, selected) => {}}
+          onChange={(value, selected) => { console.log('禁用的', value, selected); }}
         />
         <h2>实时改变的</h2>
         <CascadeSelect
           defaultValue={['alibaba', 'platform', 'fe']}
           options={options}
           clearable
-          onChange={(value, selected) => { }}
+          changeOnSelect
+          onChange={(value, selected) => { console.log('实时改变的', value, selected); }}
+        />
+        <h2>必须选中根节点</h2>
+        <CascadeSelect
+          defaultValue={['alibaba', 'platform', 'fe']}
+          options={options}
+          clearable
+          mustLeaf
+          onChange={(value, selected) => { console.log('必须选中根节点', value, selected); }}
         />
         <h2>鼠标悬浮的</h2>
         <CascadeSelect
