@@ -231,7 +231,7 @@ class CascadeSelect extends SuperComponent {
                   this.setState({ searchResult });
                 });
               }
-              this.setState({ inputValue: keywords });
+              this.setState({ inputValue: keywords || null });
             }}
           />
         </div>
