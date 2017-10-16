@@ -111,7 +111,9 @@ class CascadeSelect extends SuperComponent {
     if (!hasChildren) {
       if (this.props.displayMode === 'dropdown') {
         hideSubmenu = true;
-        this.wrapper.click();
+        if (this.wrapper) {
+          this.wrapper.click();
+        }
       }
     }
 
@@ -326,7 +328,9 @@ class CascadeSelect extends SuperComponent {
         value: [],
         selectedOptions: [],
       }, () => {
-        this.wrapper.click();
+        if (this.wrapper) {
+          this.wrapper.click();
+        }
       });
       Message.info(i18n[this.locale].mustLeaf, 3);
     } else if (newValue && newSelectedOptions) {
@@ -335,13 +339,17 @@ class CascadeSelect extends SuperComponent {
         displayValue: newValue,
         selectedOptions: newSelectedOptions,
       }, () => {
-        this.wrapper.click();
+        if (this.wrapper) {
+          this.wrapper.click();
+        }
       });
       delete this.newValue;
       delete this.newSelectedOptions;
       this.props.onChange(newValue, newSelectedOptions);
     } else {
-      this.wrapper.click();
+      if (this.wrapper) {
+        this.wrapper.click();
+      }
     }
   }
 
